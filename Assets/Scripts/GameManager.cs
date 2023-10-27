@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+
 public class GameManager : MonoBehaviour {
     private static GameManager sInstance;
     public static GameManager Instance
@@ -10,6 +12,7 @@ public class GameManager : MonoBehaviour {
             return sInstance;
         }
     }
+
 
     public Queue<Candy> candyQueue;
     public HashSet<Candy> containList;
@@ -22,15 +25,30 @@ public class GameManager : MonoBehaviour {
     private bool isSpawn = false;//스폰 중이냐?
     public List<GameObject> LineList;
     public ObjectPool[] EffectPool;
+    public int MoveCount;
+    public GameObject winPannel;
+    public TMP_Text movetext;
+
+
+
     void Awake()
     {
-        if (sInstance == null)
-            sInstance = this;
+        movetext.text =  MoveCount.ToString();
         candyQueue = new Queue<Candy>();
         StartCoroutine(SpawnCandy());
         candyQueue = new Queue<Candy>();
         containList = new HashSet<Candy>();
         LineList = new List<GameObject>();
+        if (sInstance == null)
+        {
+            sInstance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            // If an instance already exists, destroy the duplicate
+            Destroy(gameObject);
+        }
     }
 
     void Update()
@@ -56,6 +74,7 @@ public class GameManager : MonoBehaviour {
             {
                 activeObject.GetComponent<Candy>().CheckPanel = this.CheckPanel;
                 CurrentCandyCount++;
+                
             }
         }
         isSpawn = false;
@@ -68,6 +87,8 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator PopCandy()
     {
+        //MoveCount--;
+        //movetext.text = MoveCount.ToString();
         for (int i = 0; i < LineList.Count; i++)
         {
             Destroy(LineList[i].gameObject);
@@ -75,19 +96,27 @@ public class GameManager : MonoBehaviour {
         LineList.Clear();
         if (candyQueue.Count < 3)
         {
-            while(candyQueue.Count > 0)
+           
+            while (candyQueue.Count > 0)
             {
                 Candy pop = candyQueue.Dequeue();
                 pop.DeactiveWhite();
+                
             }
             candyQueue.Clear();
             containList.Clear();
             lastCandyType = null;
             yield break;
+
+           
         }
+        
+
         int score = 0;
         int scoreAdd = 10;
-        while(candyQueue.Count > 0)
+        bool candiesPopped = false;
+
+        while (candyQueue.Count > 0)
         {
             score += scoreAdd;
             scoreAdd *= 2;
@@ -102,6 +131,22 @@ public class GameManager : MonoBehaviour {
             EffectPool[random].ActiveObject(position);
             CurrentCandyCount--;
             yield return new WaitForSeconds(0.1f);
+            candiesPopped = true;
+
+
         }
-    }
+
+        if (candiesPopped)
+        {
+            // Only decrement the move count if candies were popped
+            MoveCount--;
+            movetext.text = MoveCount.ToString();
+        }
+        if (MoveCount ==0)
+        {
+            winPannel.SetActive(true);
+        }
+
+        }
+
 }

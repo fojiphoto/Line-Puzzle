@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+
+
 public enum QuestType
 {
-    TypeMatch,ScoreMatch
+    TypeMatch,ScoreMatch,MovesMatch
 }
+
 public class Quest : MonoBehaviour {
     private static Quest sInstance;
     public static Quest Instance
@@ -30,9 +33,20 @@ public class Quest : MonoBehaviour {
     public Image TimeGauge;
     public Text questText;
     public bool TimeCheck;
+    public bool ismovecount;
+    public string moveCountLevelText;
+    public int moveCount;
+
+
+
 
     public Image[] TargetImage;
     public GameObject GameClearPanel;
+    public GameObject LevelFailPanel;
+    public GameObject PausePanel;
+
+    private bool isPaused = false;
+    
 
     private int scoreDelta;
 
@@ -51,7 +65,7 @@ public class Quest : MonoBehaviour {
         switch(questType)
         {
             case QuestType.TypeMatch:
-                questText.text = "시간이 끝나기 전에 지정된 갯수만큼 쿠키를 터뜨리세요";
+                questText.text = "Before time runs out, pop a specified number of cookies";
                 for (int i = 0; i < TargetImage.Length; i++)
                 {
                     TargetImage[i].gameObject.SetActive(true);
@@ -59,23 +73,42 @@ public class Quest : MonoBehaviour {
                 }
                 break;
             case QuestType.ScoreMatch:
-                questText.text = "시간이 끝나기 전에 " + ClearScore + "점을 달성하세요";
+                questText.text = "Before time runs out "  + "Achieve points" + ClearScore;
+                for (int i = 0; i < TargetImage.Length; i++)
+                {
+                    TargetImage[i].gameObject.SetActive(false);
+                }
+                break;
+            case QuestType.MovesMatch:
+                questText.text ="You have " + moveCount + " moves to score Maximum" ; // Use the text provided in Unity
                 for (int i = 0; i < TargetImage.Length; i++)
                 {
                     TargetImage[i].gameObject.SetActive(false);
                 }
                 break;
         }
+       
     }
 
     void Update()
     {
-        if (TimeCheck)
+        
+        if (TimeCheck )
         {
-            leftTime -= Time.deltaTime;
-            TimeGauge.fillAmount = Mathf.Clamp01(leftTime / clearTime);
-            if (leftTime <= 0)
-                GameOver();
+            if (!ismovecount)
+            {
+                if (!PausePanel.activeSelf)
+                {
+                    leftTime -= Time.deltaTime;
+                    TimeGauge.fillAmount = Mathf.Clamp01(leftTime / clearTime);
+                }
+                if (leftTime <= 0)
+                {
+                    GameOver();
+                }
+                
+                
+                }
         }
         switch (questType)
         {
@@ -94,7 +127,7 @@ public class Quest : MonoBehaviour {
                     GameClear();
                 break;
             case QuestType.ScoreMatch:
-                if (currentScore >= ClearScore)
+                if (!ismovecount && currentScore >= ClearScore)
                 {
                     GameClear();
                 }
@@ -137,15 +170,31 @@ public class Quest : MonoBehaviour {
 
     void GameClear()
     {
-        print("게임끝났다");
-        GameClearPanel.transform.Find("Text").GetComponent<Text>().text = "게임클리어!";
+        print("Game Has Ended");
+        GameClearPanel.transform.Find("Text").GetComponent<Text>().text = "Game cleared!";
         GameClearPanel.SetActive(true);
     }
 
     void GameOver()
     {
-        print("게임오버");
-        GameClearPanel.transform.Find("Text").GetComponent<Text>().text = "게임오버...";
-        GameClearPanel.SetActive(true);
+        print("Game Over");
+        GameClearPanel.transform.Find("Text").GetComponent<Text>().text = "Game over..";
+        LevelFailPanel.SetActive(true);
     }
+    public void PauseGame()
+    {
+        isPaused = true;
+        //Time.timeScale = 0; // Pause the game time
+        PausePanel.SetActive(true);// Show the pause panel
+        
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        //Time.timeScale = 1; // Resume the game time
+        PausePanel.SetActive(false); // Hide the pause panel
+       
+    }
+    
 }
