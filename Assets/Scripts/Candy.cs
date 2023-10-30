@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class Candy : MonoBehaviour{
     public GameObject CheckPanel;
     private GameObject white;
+   
     void Awake()
     {
         white = transform.Find("white").gameObject;

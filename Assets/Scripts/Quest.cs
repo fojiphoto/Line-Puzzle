@@ -196,5 +196,6 @@ public class Quest : MonoBehaviour {
         PausePanel.SetActive(false); // Hide the pause panel
        
     }
+  
     
 }

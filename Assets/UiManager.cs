@@ -9,5 +9,5 @@ public class UiManager : MonoBehaviour
     {
         Quest.Instance.TimeCheck = true;
     }
-
+    
 }

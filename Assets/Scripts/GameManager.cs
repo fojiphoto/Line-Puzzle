@@ -28,11 +28,12 @@ public class GameManager : MonoBehaviour {
     public int MoveCount;
     public GameObject winPannel;
     public TMP_Text movetext;
-
+    
 
 
     void Awake()
     {
+       
         movetext.text =  MoveCount.ToString();
         candyQueue = new Queue<Candy>();
         StartCoroutine(SpawnCandy());
@@ -42,13 +43,16 @@ public class GameManager : MonoBehaviour {
         if (sInstance == null)
         {
             sInstance = this;
-            DontDestroyOnLoad(gameObject);
+            //    DontDestroyOnLoad(gameObject);
         }
         else
         {
-            // If an instance already exists, destroy the duplicate
-            Destroy(gameObject);
-        }
+            if (sInstance != this)
+            {
+                //    // If an instance already exists and it's not the current one, destroy the duplicate
+                //    Destroy(gameObject);
+            }
+    }
     }
 
     void Update()
@@ -148,5 +152,7 @@ public class GameManager : MonoBehaviour {
         }
 
         }
+   
+
 
 }
