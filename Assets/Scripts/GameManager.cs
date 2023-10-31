@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-
+    public GameObject sound;
+    public GameObject Move;
     public Queue<Candy> candyQueue;
     public HashSet<Candy> containList;
     public Candy lastCandyType;
@@ -148,6 +149,8 @@ public class GameManager : MonoBehaviour {
         }
         if (MoveCount ==0)
         {
+            sound.SetActive(false);
+            Move.SetActive(false);
             winPannel.SetActive(true);
         }
 
