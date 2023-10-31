@@ -152,6 +152,7 @@ public class GameManager : MonoBehaviour {
             sound.SetActive(false);
             Move.SetActive(false);
             winPannel.SetActive(true);
+            AdsManager.instance?.ShowInterstitialWithoutConditions();
         }
 
         }

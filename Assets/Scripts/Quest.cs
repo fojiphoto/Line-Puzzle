@@ -173,6 +173,7 @@ public class Quest : MonoBehaviour {
         print("Game Has Ended");
         GameClearPanel.transform.Find("Text").GetComponent<Text>().text = "Game cleared!";
         GameClearPanel.SetActive(true);
+        AdsManager.instance?.ShowInterstitialWithoutConditions();
     }
 
     void GameOver()
@@ -180,6 +181,7 @@ public class Quest : MonoBehaviour {
         print("Game Over");
         GameClearPanel.transform.Find("Text").GetComponent<Text>().text = "Game over..";
         LevelFailPanel.SetActive(true);
+        AdsManager.instance?.ShowInterstitialWithoutConditions();
     }
     public void PauseGame()
     {

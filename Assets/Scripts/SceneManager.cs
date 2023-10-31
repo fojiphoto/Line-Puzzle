@@ -22,6 +22,10 @@ public class SceneManager : MonoBehaviour {
         }
     }
 
+    internal static AsyncOperation LoadSceneAsync(int sceneIndex)
+    {
+        throw new NotImplementedException();
+    }
 
     private float factor;        //연출 진행도
 

@@ -30,7 +30,7 @@ public class soundbuttoncontrol : MonoBehaviour
             //isAudioPlaying = true;
            
         }
-        // Toggle the audio state flag
+        // Toggle the audio state flags
         isAudioPlaying = !isAudioPlaying;
     }
 }
