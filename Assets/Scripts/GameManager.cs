@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     private static GameManager sInstance;
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour {
                 //    Destroy(gameObject);
             }
     }
+
     }
 
     void Update()
@@ -149,12 +151,14 @@ public class GameManager : MonoBehaviour {
         }
         if (MoveCount ==0)
         {
+            PlayerPrefs.SetInt("unlockedmovedLevel", (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1)-12);
             sound.SetActive(false);
             Move.SetActive(false);
             winPannel.SetActive(true);
             AdsManager.instance?.ShowInterstitialWithoutConditions();
         }
-
+        
+        
         }
    
 

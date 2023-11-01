@@ -170,6 +170,7 @@ public class Quest : MonoBehaviour {
 
     void GameClear()
     {
+        PlayerPrefs.SetInt("unlocktimeLevel", (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1) - 5);
         print("Game Has Ended");
         GameClearPanel.transform.Find("Text").GetComponent<Text>().text = "Game cleared!";
         GameClearPanel.SetActive(true);
