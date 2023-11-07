@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class moveslevelmanager : MonoBehaviour
 {
-    public Button[] buttons;
+    public Button[] buttons;public GameObject[] locks;
 
     private void Awake()
     {
@@ -18,6 +18,8 @@ public class moveslevelmanager : MonoBehaviour
         for (int i = 0; i < unlockedLevel; i++)
         {
             buttons[i].interactable = true;
+            locks[i].SetActive(false);
+            
         }
     }
     }
